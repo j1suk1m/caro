@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import today.caro.api.auth.dto.LoginRequest;
+import today.caro.api.auth.dto.LoginResponse;
 import today.caro.api.auth.dto.SignUpRequest;
 import today.caro.api.auth.dto.SignUpResponse;
 import today.caro.api.auth.service.AuthService;
@@ -38,6 +40,21 @@ public class AuthController {
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(ApiResponse.success(SuccessCode.CREATED, response));
+    }
+
+    @Operation(summary = "로그인", description = "이메일, 비밀번호로 로그인 후 토큰을 발급합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그인 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "입력값 검증 실패"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
+    })
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request) {
+        LoginResponse response = authService.login(request);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(ApiResponse.success(SuccessCode.OK, response));
     }
 
 }
