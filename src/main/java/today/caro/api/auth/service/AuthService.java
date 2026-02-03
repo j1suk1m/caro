@@ -77,4 +77,8 @@ public class AuthService {
         );
     }
 
+    public void logout(Long memberId) {
+        refreshTokenService.delete(memberId);
+    }
+
 }

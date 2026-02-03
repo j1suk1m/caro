@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import today.caro.api.auth.dto.SignUpRequest;
 import today.caro.api.auth.dto.SignUpResponse;
 import today.caro.api.auth.service.AuthService;
 import today.caro.api.common.dto.ApiResponse;
+import today.caro.api.common.dto.EmptyData;
 import today.caro.api.common.dto.SuccessCode;
 
 @Tag(name = "Auth", description = "인증 관련 API")
@@ -55,6 +57,20 @@ public class AuthController {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(ApiResponse.success(SuccessCode.OK, response));
+    }
+
+    @Operation(summary = "로그아웃", description = "리프레시 토큰을 무효화합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그아웃 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
+    })
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<EmptyData>> logout(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        authService.logout(memberId);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK));
     }
 
 }

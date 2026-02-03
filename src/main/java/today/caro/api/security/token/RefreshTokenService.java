@@ -27,4 +27,9 @@ public class RefreshTokenService {
         );
     }
 
+    public void delete(Long memberId) {
+        String key = KEY_PREFIX + memberId;
+        redisTemplate.delete(key);
+    }
+
 }

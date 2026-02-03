@@ -12,6 +12,10 @@ public record ApiResponse<T>(
         return new ApiResponse<>(successCode.name(), successCode.getMessage(), data);
     }
 
+    public static ApiResponse<EmptyData> success(SuccessCode successCode) {
+        return new ApiResponse<>(successCode.name(), successCode.getMessage(), new EmptyData());
+    }
+
     public static ApiResponse<EmptyData> error(ErrorCode errorCode, String message) {
         return new ApiResponse<>(errorCode.name(), message, new EmptyData());
     }
