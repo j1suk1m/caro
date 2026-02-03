@@ -8,10 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import today.caro.api.auth.dto.EmailExistsResponse;
 import today.caro.api.auth.dto.LoginRequest;
 import today.caro.api.auth.dto.LoginResponse;
 import today.caro.api.auth.dto.TokenReissueRequest;
@@ -84,6 +87,18 @@ public class AuthController {
     @PostMapping("/reissue")
     public ResponseEntity<ApiResponse<TokenReissueResponse>> reissue(@Valid @RequestBody TokenReissueRequest request) {
         TokenReissueResponse response = authService.reissue(request);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK, response));
+    }
+
+    @Operation(summary = "이메일 중복 검증", description = "회원 가입 전 이메일 중복 여부를 검증합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "검증 성공")
+    })
+    @GetMapping("/email/exists")
+    public ResponseEntity<ApiResponse<EmailExistsResponse>> checkEmailExists(@RequestParam String email) {
+        EmailExistsResponse response = authService.checkEmailExists(email);
 
         return ResponseEntity
             .ok(ApiResponse.success(SuccessCode.OK, response));

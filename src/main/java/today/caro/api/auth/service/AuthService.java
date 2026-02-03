@@ -4,12 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import today.caro.api.auth.dto.LoginRequest;
-import today.caro.api.auth.dto.LoginResponse;
-import today.caro.api.auth.dto.TokenReissueRequest;
-import today.caro.api.auth.dto.TokenReissueResponse;
-import today.caro.api.auth.dto.SignUpRequest;
-import today.caro.api.auth.dto.SignUpResponse;
+import today.caro.api.auth.dto.*;
 import today.caro.api.common.exception.BusinessException;
 import today.caro.api.common.exception.ErrorCode;
 import today.caro.api.config.JwtProperties;
@@ -111,6 +106,11 @@ public class AuthService {
             jwtProperties.accessTokenExpirationSeconds(),
             jwtProperties.refreshTokenExpirationSeconds()
         );
+    }
+
+    public EmailExistsResponse checkEmailExists(String email) {
+        boolean exists = memberRepository.existsByEmail(email);
+        return new EmailExistsResponse(exists);
     }
 
 }
