@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import today.caro.api.auth.dto.LoginRequest;
 import today.caro.api.auth.dto.LoginResponse;
+import today.caro.api.auth.dto.TokenReissueRequest;
+import today.caro.api.auth.dto.TokenReissueResponse;
 import today.caro.api.auth.dto.SignUpRequest;
 import today.caro.api.auth.dto.SignUpResponse;
 import today.caro.api.auth.service.AuthService;
@@ -71,6 +73,20 @@ public class AuthController {
 
         return ResponseEntity
             .ok(ApiResponse.success(SuccessCode.OK));
+    }
+
+    @Operation(summary = "토큰 재발급", description = "리프레시 토큰으로 새로운 액세스 토큰과 리프레시 토큰을 발급합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "토큰 재발급 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "입력값 검증 실패"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "유효하지 않은 리프레시 토큰")
+    })
+    @PostMapping("/reissue")
+    public ResponseEntity<ApiResponse<TokenReissueResponse>> reissue(@Valid @RequestBody TokenReissueRequest request) {
+        TokenReissueResponse response = authService.reissue(request);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK, response));
     }
 
 }

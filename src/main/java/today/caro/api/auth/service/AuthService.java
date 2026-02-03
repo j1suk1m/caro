@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import today.caro.api.auth.dto.LoginRequest;
 import today.caro.api.auth.dto.LoginResponse;
+import today.caro.api.auth.dto.TokenReissueRequest;
+import today.caro.api.auth.dto.TokenReissueResponse;
 import today.caro.api.auth.dto.SignUpRequest;
 import today.caro.api.auth.dto.SignUpResponse;
 import today.caro.api.common.exception.BusinessException;
@@ -79,6 +81,36 @@ public class AuthService {
 
     public void logout(Long memberId) {
         refreshTokenService.delete(memberId);
+    }
+
+    public TokenReissueResponse reissue(TokenReissueRequest request) {
+        String refreshToken = request.refreshToken();
+
+        // 토큰 유효성 검증
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
+            throw new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        Long memberId = jwtTokenProvider.getMemberIdFromToken(refreshToken);
+
+        // 저장된 토큰과 일치하는지 검증
+        if (!refreshTokenService.matches(memberId, refreshToken)) {
+            throw new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        // 신규 토큰 발급
+        String newAccessToken = jwtTokenProvider.createAccessToken(memberId);
+        String newRefreshToken = jwtTokenProvider.createRefreshToken(memberId);
+
+        // 신규 리프레시 토큰 저장
+        refreshTokenService.save(memberId, newRefreshToken);
+
+        return new TokenReissueResponse(
+            newAccessToken,
+            newRefreshToken,
+            jwtProperties.accessTokenExpirationSeconds(),
+            jwtProperties.refreshTokenExpirationSeconds()
+        );
     }
 
 }

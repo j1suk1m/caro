@@ -32,4 +32,11 @@ public class RefreshTokenService {
         redisTemplate.delete(key);
     }
 
+    public boolean matches(Long memberId, String refreshToken) {
+        String key = KEY_PREFIX + memberId;
+        String storedToken = redisTemplate.opsForValue().get(key);
+
+        return refreshToken.equals(storedToken);
+    }
+
 }
