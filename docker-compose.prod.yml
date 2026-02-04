@@ -16,7 +16,6 @@ services:
       - DB_HOST=mysql-container
       - REDIS_HOST=redis-container
       - JWT_SECRET=${JWT_SECRET}
-      - DDL_AUTO=${DDL_AUTO:-validate}
     depends_on:
       mysql:
         condition: service_healthy
