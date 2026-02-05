@@ -28,7 +28,7 @@ import today.caro.api.common.dto.EmptyData;
 import today.caro.api.common.dto.SuccessCode;
 import today.caro.api.config.SwaggerConstants;
 
-@Tag(name = "Auth", description = "인증 관련 API")
+@Tag(name = "Auth", description = "인증 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -36,10 +36,10 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "회원 가입", description = "이메일, 비밀번호, 이름으로 가입 후 토큰을 발급합니다.")
+    @Operation(summary = "회원 가입", description = "이메일, 비밀번호, 이름으로 회원 가입 후 토큰을 발급합니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "회원 가입 성공"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "입력값 검증 실패"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "이메일 중복")
     })
     @PostMapping("/sign-up")
@@ -53,8 +53,8 @@ public class AuthController {
 
     @Operation(summary = "로그인", description = "이메일, 비밀번호로 로그인 후 토큰을 발급합니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그인 성공"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "입력값 검증 실패"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
     })
     @PostMapping("/login")
@@ -68,12 +68,12 @@ public class AuthController {
 
     @Operation(
         summary = "로그아웃",
-        description = "리프레시 토큰을 무효화합니다.",
+        description = "현재 사용자의 리프레시 토큰을 무효화합니다.",
         security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
     )
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그아웃 성공"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요")
     })
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<EmptyData>> logout(Authentication authentication) {
@@ -86,9 +86,9 @@ public class AuthController {
 
     @Operation(summary = "토큰 재발급", description = "리프레시 토큰으로 새로운 액세스 토큰과 리프레시 토큰을 발급합니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "토큰 재발급 성공"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "입력값 검증 실패"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "유효하지 않은 리프레시 토큰")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "유효하지 않은 토큰")
     })
     @PostMapping("/reissue")
     public ResponseEntity<ApiResponse<TokenReissueResponse>> reissue(@Valid @RequestBody TokenReissueRequest request) {
@@ -100,7 +100,7 @@ public class AuthController {
 
     @Operation(summary = "이메일 중복 검증", description = "회원 가입 전 이메일 중복 여부를 검증합니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "검증 성공")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/email/exists")
     public ResponseEntity<ApiResponse<EmailExistsResponse>> checkEmailExists(@RequestParam String email) {

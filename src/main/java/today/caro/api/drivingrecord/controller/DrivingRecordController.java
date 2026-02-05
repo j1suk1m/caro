@@ -25,7 +25,7 @@ import today.caro.api.drivingrecord.service.DrivingRecordService;
 
 import java.time.YearMonth;
 
-@Tag(name = "Driving Record", description = "운행 기록 관련 API")
+@Tag(name = "Driving Record", description = "운행 기록 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/driving-records")
@@ -34,13 +34,13 @@ public class DrivingRecordController {
     private final DrivingRecordService drivingRecordService;
 
     @Operation(
-        summary = "운행 기록 조회",
-        description = "현재 로그인한 사용자의 운행 기록을 월별로 조회합니다.",
+        summary = "운행 기록 목록 조회",
+        description = "현재 사용자의 운행 기록을 월별로 조회합니다.",
         security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
     )
-    @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요")
     })
     @GetMapping
     public ResponseEntity<ApiResponse<DrivingRecordPageResponse>> getDrivingRecords(
@@ -62,11 +62,11 @@ public class DrivingRecordController {
         description = "새로운 운행 기록을 생성합니다.",
         security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
     )
-    @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "생성 성공"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "차량 접근 권한 없음"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "회원 또는 차량을 찾을 수 없음")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "접근 권한 없음"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "리소스를 찾을 수 없음")
     })
     @PostMapping
     public ResponseEntity<ApiResponse<DrivingRecordCreateResponse>> createDrivingRecord(

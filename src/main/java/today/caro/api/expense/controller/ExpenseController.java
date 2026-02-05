@@ -20,7 +20,7 @@ import today.caro.api.expense.dto.ExpenseCreateResponse;
 import today.caro.api.expense.service.ExpenseCategoryService;
 import today.caro.api.expense.service.ExpenseService;
 
-@Tag(name = "Expense", description = "지출 내역 관련 API")
+@Tag(name = "Expense", description = "지출 내역 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/expenses")
@@ -34,11 +34,11 @@ public class ExpenseController {
         description = "새로운 지출 내역을 생성합니다.",
         security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
     )
-    @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "생성 성공"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "차량 접근 권한 없음"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "회원을 찾을 수 없음")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "접근 권한 없음"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "리소스를 찾을 수 없음")
     })
     @PostMapping
     public ResponseEntity<ApiResponse<ExpenseCreateResponse>> createExpense(
@@ -52,11 +52,9 @@ public class ExpenseController {
             .ok(ApiResponse.success(SuccessCode.CREATED, response));
     }
 
-    @Operation(
-        summary = "지출 카테고리 전체 조회", description = "등록된 모든 지출 카테고리를 조회합니다."
-    )
-    @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공")
+    @Operation(summary = "지출 카테고리 목록 조회", description = "등록된 모든 지출 카테고리를 조회합니다.")
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/categories")
     public ResponseEntity<ApiResponse<List<ExpenseCategoryResponse>>> getExpenseCategories() {

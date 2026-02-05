@@ -18,7 +18,7 @@ import today.caro.api.vehicle.service.VehicleService;
 
 import java.util.List;
 
-@Tag(name = "Vehicle", description = "차량 마스터 데이터 관련 API")
+@Tag(name = "Vehicle", description = "차량 정보 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/vehicles")
@@ -26,9 +26,9 @@ public class VehicleController {
 
     private final VehicleService vehicleService;
 
-    @Operation(summary = "차량 브랜드 전체 조회", description = "등록된 모든 차량 브랜드를 조회합니다.")
+    @Operation(summary = "차량 브랜드 목록 조회", description = "등록된 모든 차량 브랜드를 조회합니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공")
     })
     @GetMapping("/brands")
     public ResponseEntity<ApiResponse<List<VehicleBrandListResponse>>> getAllBrands() {
@@ -38,10 +38,10 @@ public class VehicleController {
             .ok(ApiResponse.success(SuccessCode.OK, response));
     }
 
-    @Operation(summary = "차량 모델 조회", description = "특정 브랜드의 차량 모델을 조회합니다.")
+    @Operation(summary = "차량 모델 목록 조회", description = "특정 브랜드의 차량 모델을 조회합니다. 키워드로 필터링할 수 있습니다.")
     @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "차량 브랜드를 찾을 수 없음")
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "리소스를 찾을 수 없음")
     })
     @GetMapping("/brands/{brand-id}/models")
     public ResponseEntity<ApiResponse<List<VehicleModelListResponse>>> getModelsByBrand(
