@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import today.caro.api.common.dto.ApiResponse;
 import today.caro.api.common.dto.SuccessCode;
+import today.caro.api.config.SwaggerConstants;
 import today.caro.api.drivingrecord.dto.DrivingRecordCreateRequest;
 import today.caro.api.drivingrecord.dto.DrivingRecordCreateResponse;
 import today.caro.api.drivingrecord.dto.DrivingRecordPageResponse;
@@ -35,7 +36,7 @@ public class DrivingRecordController {
     @Operation(
         summary = "운행 기록 조회",
         description = "현재 로그인한 사용자의 운행 기록을 월별로 조회합니다.",
-        security = @SecurityRequirement(name = "bearerAuth")
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
     )
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
@@ -59,7 +60,7 @@ public class DrivingRecordController {
     @Operation(
         summary = "운행 기록 생성",
         description = "새로운 운행 기록을 생성합니다.",
-        security = @SecurityRequirement(name = "bearerAuth")
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
     )
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "생성 성공"),

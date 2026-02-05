@@ -18,8 +18,6 @@ public class SwaggerConfig {
     @Value("${api.server.url}")
     private String serverUrl;
 
-    private static final String BEARER_SCHEME = "Bearer Authentication";
-
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -28,10 +26,10 @@ public class SwaggerConfig {
                 .description("CARO 애플리케이션의 백엔드 API 명세서")
                 .version("v1"))
             .servers(List.of(new Server().url(serverUrl)))
-            .addSecurityItem(new SecurityRequirement().addList(BEARER_SCHEME))
+            .addSecurityItem(new SecurityRequirement().addList(SwaggerConstants.BEARER_SCHEME))
             .components(new Components()
-                .addSecuritySchemes(BEARER_SCHEME, new SecurityScheme()
-                    .name(BEARER_SCHEME)
+                .addSecuritySchemes(SwaggerConstants.BEARER_SCHEME, new SecurityScheme()
+                    .name(SwaggerConstants.BEARER_SCHEME)
                     .type(SecurityScheme.Type.HTTP)
                     .scheme("bearer")
                     .bearerFormat("JWT")));

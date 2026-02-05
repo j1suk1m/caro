@@ -2,6 +2,7 @@ package today.caro.api.auth.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import today.caro.api.auth.service.AuthService;
 import today.caro.api.common.dto.ApiResponse;
 import today.caro.api.common.dto.EmptyData;
 import today.caro.api.common.dto.SuccessCode;
+import today.caro.api.config.SwaggerConstants;
 
 @Tag(name = "Auth", description = "인증 관련 API")
 @RestController
@@ -64,7 +66,11 @@ public class AuthController {
             .body(ApiResponse.success(SuccessCode.OK, response));
     }
 
-    @Operation(summary = "로그아웃", description = "리프레시 토큰을 무효화합니다.")
+    @Operation(
+        summary = "로그아웃",
+        description = "리프레시 토큰을 무효화합니다.",
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
+    )
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그아웃 성공"),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 실패")

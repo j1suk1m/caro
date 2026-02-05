@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import today.caro.api.common.dto.ApiResponse;
 import today.caro.api.common.dto.SuccessCode;
+import today.caro.api.config.SwaggerConstants;
 import today.caro.api.expense.dto.ExpenseCategoryResponse;
 import today.caro.api.expense.dto.ExpenseCreateRequest;
 
@@ -31,7 +32,7 @@ public class ExpenseController {
     @Operation(
         summary = "지출 내역 생성",
         description = "새로운 지출 내역을 생성합니다.",
-        security = @SecurityRequirement(name = "bearerAuth")
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
     )
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "생성 성공"),
