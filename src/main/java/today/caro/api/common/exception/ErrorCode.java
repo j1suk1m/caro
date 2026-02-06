@@ -19,7 +19,10 @@ public enum ErrorCode {
 
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
     MEMBER_CAR_NOT_FOUND(HttpStatus.NOT_FOUND, "등록된 차량을 찾을 수 없습니다."),
-    MEMBER_CAR_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 차량에 대한 접근 권한이 없습니다.");
+    MEMBER_CAR_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 차량에 대한 접근 권한이 없습니다."),
+
+    EXPENSE_NOT_FOUND(HttpStatus.NOT_FOUND, "지출 내역을 찾을 수 없습니다."),
+    EXPENSE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 지출 내역에 대한 접근 권한이 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

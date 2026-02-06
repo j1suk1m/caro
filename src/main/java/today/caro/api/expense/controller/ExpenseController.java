@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import today.caro.api.common.dto.ApiResponse;
 import today.caro.api.common.dto.SuccessCode;
 import today.caro.api.config.SwaggerConstants;
-import today.caro.api.expense.dto.ExpenseCategoryGetResponse;
-import today.caro.api.expense.dto.ExpenseCreateRequest;
-import today.caro.api.expense.dto.ExpenseCreateResponse;
-import today.caro.api.expense.dto.ExpensePageGetResponse;
+import today.caro.api.expense.dto.*;
 import today.caro.api.expense.entity.ExpenseCategory;
 import today.caro.api.expense.service.ExpenseCategoryService;
 import today.caro.api.expense.service.ExpenseService;
@@ -98,6 +95,30 @@ public class ExpenseController {
         ExpensePageGetResponse response = expenseService.getExpenses(
             memberId, yearMonth, date, category, cursor, size
         );
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK, response));
+    }
+
+    @Operation(
+        summary = "지출 내역 수정",
+        description = "지출 내역을 수정합니다.",
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
+    )
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "접근 권한 없음"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "리소스를 찾을 수 없음")
+    })
+    @PutMapping("/{expense-id}")
+    public ResponseEntity<ApiResponse<ExpenseUpdateResponse>> updateExpense(
+        Authentication authentication,
+        @PathVariable(name = "expense-id") Long expenseId,
+        @Valid @RequestBody ExpenseUpdateRequest request
+    ) {
+        Long memberId = Long.parseLong(authentication.getName());
+        ExpenseUpdateResponse response = expenseService.updateExpense(memberId, expenseId, request);
 
         return ResponseEntity
             .ok(ApiResponse.success(SuccessCode.OK, response));

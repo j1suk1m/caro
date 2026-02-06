@@ -72,4 +72,18 @@ public class Expense {
         this.memo = memo;
     }
 
+    public void update(
+        LocalDate expenseDate,
+        ExpenseCategory category,
+        BigDecimal amount,
+        String location,
+        String memo
+    ) {
+        this.expenseDate = expenseDate;
+        this.category = category;
+        this.amount = amount;
+        this.location = location;
+        this.memo = memo;
+    }
+
 }

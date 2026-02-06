@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import today.caro.api.common.exception.BusinessException;
 import today.caro.api.common.exception.ErrorCode;
-import today.caro.api.expense.dto.ExpenseCreateRequest;
-import today.caro.api.expense.dto.ExpenseCreateResponse;
-import today.caro.api.expense.dto.ExpenseGetResponse;
-import today.caro.api.expense.dto.ExpensePageGetResponse;
+import today.caro.api.expense.dto.*;
 import today.caro.api.expense.entity.Expense;
 import today.caro.api.expense.entity.ExpenseCategory;
 import today.caro.api.expense.repository.ExpenseRepository;
@@ -74,6 +71,26 @@ public class ExpenseService {
             .toList();
 
         return ExpensePageGetResponse.of(totalCount, responses, size);
+    }
+
+    @Transactional
+    public ExpenseUpdateResponse updateExpense(Long memberId, Long expenseId, ExpenseUpdateRequest request) {
+        Expense expense = expenseRepository.findById(expenseId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.EXPENSE_NOT_FOUND));
+
+        if (!expense.getMember().getId().equals(memberId)) {
+            throw new BusinessException(ErrorCode.EXPENSE_ACCESS_DENIED);
+        }
+
+        expense.update(
+            request.expenseDate(),
+            request.category(),
+            request.amount(),
+            request.location(),
+            request.memo()
+        );
+
+        return ExpenseUpdateResponse.from(expense);
     }
 
 }
