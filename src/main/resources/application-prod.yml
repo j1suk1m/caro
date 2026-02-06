@@ -20,6 +20,8 @@ server:
   port: ${APP_PORT:8080}
 
 api:
+  client:
+    url: https://caro.today
   server:
     url: https://api.caro.today
 
