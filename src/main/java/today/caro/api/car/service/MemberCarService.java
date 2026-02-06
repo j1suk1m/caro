@@ -3,6 +3,7 @@ package today.caro.api.car.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import today.caro.api.car.dto.MemberCarGetResponse;
 import today.caro.api.common.exception.BusinessException;
 import today.caro.api.common.exception.ErrorCode;
 import today.caro.api.member.entity.Member;
@@ -13,6 +14,8 @@ import today.caro.api.car.entity.MemberCar;
 import today.caro.api.car.repository.MemberCarRepository;
 import today.caro.api.vehicle.entity.CarModel;
 import today.caro.api.vehicle.repository.CarModelRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +43,14 @@ public class MemberCarService {
         memberCarRepository.save(memberCar);
 
         return MemberCarRegisterResponse.from(memberCar);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberCarGetResponse> findAllCars(Long memberId) {
+        return memberCarRepository.findAllByMemberId(memberId)
+            .stream()
+            .map(MemberCarGetResponse::from)
+            .toList();
     }
 
 }

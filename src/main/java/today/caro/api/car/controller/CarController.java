@@ -9,16 +9,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import today.caro.api.car.dto.MemberCarGetResponse;
 import today.caro.api.common.dto.ApiResponse;
 import today.caro.api.common.dto.SuccessCode;
 import today.caro.api.config.SwaggerConstants;
 import today.caro.api.car.dto.MemberCarRegisterRequest;
 import today.caro.api.car.dto.MemberCarRegisterResponse;
 import today.caro.api.car.service.MemberCarService;
+
+import java.util.List;
 
 @Tag(name = "Car", description = "회원 차량 API")
 @RestController
@@ -50,6 +50,25 @@ public class CarController {
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(ApiResponse.success(SuccessCode.CREATED, response));
+    }
+
+    @Operation(
+        summary = "내 차량 목록 조회",
+        description = "현재 사용자의 개인 차량 목록을 조회합니다.",
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
+    )
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요"),
+    })
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<MemberCarGetResponse>>> getAllCars(Authentication authentication) {
+        Long memberId = Long.parseLong(authentication.getName());
+        List<MemberCarGetResponse> response = memberCarService.findAllCars(memberId);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK, response));
     }
 
 }
