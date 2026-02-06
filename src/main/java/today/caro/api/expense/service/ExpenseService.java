@@ -1,5 +1,6 @@
 package today.caro.api.expense.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import today.caro.api.common.exception.BusinessException;
 import today.caro.api.common.exception.ErrorCode;
 import today.caro.api.expense.dto.*;
+import today.caro.api.expense.dto.ExpenseSummaryGetResponse.*;
 import today.caro.api.expense.entity.Expense;
 import today.caro.api.expense.entity.ExpenseCategory;
 import today.caro.api.expense.repository.ExpenseRepository;
@@ -91,6 +93,45 @@ public class ExpenseService {
         );
 
         return ExpenseUpdateResponse.from(expense);
+    }
+
+    @Transactional(readOnly = true)
+    public ExpenseSummaryGetResponse getSummary(Long memberId, YearMonth yearMonth) {
+        Period period = buildPeriod(memberId, yearMonth);
+        TotalAmount totalAmount = buildTotalAmount(memberId, yearMonth);
+        List<CategorySummary> categories = expenseRepository.findCategorySummaries(memberId, yearMonth);
+
+        return new ExpenseSummaryGetResponse(period, totalAmount, categories);
+    }
+
+    private Period buildPeriod(Long memberId, YearMonth yearMonth) {
+        if (yearMonth != null) {
+            return new Period(yearMonth.atDay(1), yearMonth.atEndOfMonth());
+        }
+
+        LocalDate firstDate = expenseRepository.findFirstExpenseDate(memberId);
+        LocalDate lastDate = expenseRepository.findLastExpenseDate(memberId);
+
+        if (firstDate == null || lastDate == null) {
+            LocalDate today = LocalDate.now();
+            return new Period(today, today);
+        }
+
+        return new Period(firstDate, lastDate);
+    }
+
+    private TotalAmount buildTotalAmount(Long memberId, YearMonth yearMonth) {
+        BigDecimal amount = expenseRepository.findTotalAmount(memberId, yearMonth);
+
+        if (yearMonth == null) {
+            return new TotalAmount(amount, null);
+        }
+
+        YearMonth previousMonth = yearMonth.minusMonths(1);
+        BigDecimal previousAmount = expenseRepository.findTotalAmount(memberId, previousMonth);
+        Comparison comparison = new Comparison(previousAmount, amount.subtract(previousAmount));
+
+        return new TotalAmount(amount, comparison);
     }
 
 }

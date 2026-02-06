@@ -124,4 +124,30 @@ public class ExpenseController {
             .ok(ApiResponse.success(SuccessCode.OK, response));
     }
 
+    @Operation(
+        summary = "지출 요약 조회",
+        description = """
+            지출 요약을 조회합니다.
+            - yearMonth가 있으면 해당 월의 요약
+            - yearMonth가 없으면 전체 기간 요약
+            """,
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
+    )
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요")
+    })
+    @GetMapping("/summary")
+    public ResponseEntity<ApiResponse<ExpenseSummaryGetResponse>> getSummary(
+        Authentication authentication,
+        @Parameter(description = "조회 월", example = "2026-02")
+        @RequestParam(required = false) YearMonth yearMonth
+    ) {
+        Long memberId = Long.parseLong(authentication.getName());
+        ExpenseSummaryGetResponse response = expenseService.getSummary(memberId, yearMonth);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK, response));
+    }
+
 }
