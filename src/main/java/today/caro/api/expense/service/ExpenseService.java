@@ -15,8 +15,8 @@ import today.caro.api.expense.entity.Expense;
 import today.caro.api.expense.entity.ExpenseCategory;
 import today.caro.api.expense.repository.ExpenseRepository;
 import today.caro.api.expense.util.ExpenseCursor;
-import today.caro.api.membercar.entity.MemberCar;
-import today.caro.api.membercar.repository.MemberCarRepository;
+import today.caro.api.car.entity.MemberCar;
+import today.caro.api.car.repository.MemberCarRepository;
 
 @Service
 @RequiredArgsConstructor

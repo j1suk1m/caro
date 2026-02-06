@@ -1,9 +1,9 @@
-package today.caro.api.membercar.repository;
+package today.caro.api.car.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import today.caro.api.membercar.entity.MemberCar;
+import today.caro.api.car.entity.MemberCar;
 
 import java.util.Optional;
 

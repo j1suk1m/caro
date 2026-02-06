@@ -8,8 +8,8 @@ import today.caro.api.common.exception.ErrorCode;
 import today.caro.api.member.dto.ProfileGetResponse;
 import today.caro.api.member.entity.Member;
 import today.caro.api.member.repository.MemberRepository;
-import today.caro.api.membercar.entity.MemberCar;
-import today.caro.api.membercar.repository.MemberCarRepository;
+import today.caro.api.car.entity.MemberCar;
+import today.caro.api.car.repository.MemberCarRepository;
 
 @Service
 @RequiredArgsConstructor

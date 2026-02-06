@@ -8,8 +8,8 @@ import today.caro.api.common.exception.ErrorCode;
 import today.caro.api.drivingrecord.dto.*;
 import today.caro.api.drivingrecord.entity.DrivingRecord;
 import today.caro.api.drivingrecord.repository.DrivingRecordRepository;
-import today.caro.api.membercar.entity.MemberCar;
-import today.caro.api.membercar.repository.MemberCarRepository;
+import today.caro.api.car.entity.MemberCar;
+import today.caro.api.car.repository.MemberCarRepository;
 import today.caro.api.point.policy.PointCalculationPolicy;
 
 import java.time.LocalDate;

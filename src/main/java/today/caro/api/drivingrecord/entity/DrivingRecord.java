@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import today.caro.api.member.entity.Member;
-import today.caro.api.membercar.entity.MemberCar;
+import today.caro.api.car.entity.MemberCar;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

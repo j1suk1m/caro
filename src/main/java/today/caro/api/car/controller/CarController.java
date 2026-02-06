@@ -1,4 +1,4 @@
-package today.caro.api.membercar.controller;
+package today.caro.api.car.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 import today.caro.api.common.dto.ApiResponse;
 import today.caro.api.common.dto.SuccessCode;
 import today.caro.api.config.SwaggerConstants;
-import today.caro.api.membercar.dto.MemberCarRegisterRequest;
-import today.caro.api.membercar.dto.MemberCarRegisterResponse;
-import today.caro.api.membercar.service.MemberCarService;
+import today.caro.api.car.dto.MemberCarRegisterRequest;
+import today.caro.api.car.dto.MemberCarRegisterResponse;
+import today.caro.api.car.service.MemberCarService;
 
 @Tag(name = "My Car", description = "내 차량 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/my/car")
-public class MemberCarController {
+public class CarController {
 
     private final MemberCarService memberCarService;
 

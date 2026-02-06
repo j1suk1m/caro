@@ -1,6 +1,6 @@
-package today.caro.api.membercar.dto;
+package today.caro.api.car.dto;
 
-import today.caro.api.membercar.entity.MemberCar;
+import today.caro.api.car.entity.MemberCar;
 
 public record MemberCarRegisterResponse(
     Long id,

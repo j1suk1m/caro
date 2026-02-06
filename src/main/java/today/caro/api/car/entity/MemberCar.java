@@ -1,4 +1,4 @@
-package today.caro.api.membercar.entity;
+package today.caro.api.car.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

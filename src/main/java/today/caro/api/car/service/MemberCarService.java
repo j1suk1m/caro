@@ -1,4 +1,4 @@
-package today.caro.api.membercar.service;
+package today.caro.api.car.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,10 +7,10 @@ import today.caro.api.common.exception.BusinessException;
 import today.caro.api.common.exception.ErrorCode;
 import today.caro.api.member.entity.Member;
 import today.caro.api.member.repository.MemberRepository;
-import today.caro.api.membercar.dto.MemberCarRegisterRequest;
-import today.caro.api.membercar.dto.MemberCarRegisterResponse;
-import today.caro.api.membercar.entity.MemberCar;
-import today.caro.api.membercar.repository.MemberCarRepository;
+import today.caro.api.car.dto.MemberCarRegisterRequest;
+import today.caro.api.car.dto.MemberCarRegisterResponse;
+import today.caro.api.car.entity.MemberCar;
+import today.caro.api.car.repository.MemberCarRepository;
 import today.caro.api.vehicle.entity.CarModel;
 import today.caro.api.vehicle.repository.CarModelRepository;
 

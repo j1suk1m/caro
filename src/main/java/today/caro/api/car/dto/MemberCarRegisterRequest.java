@@ -1,4 +1,4 @@
-package today.caro.api.membercar.dto;
+package today.caro.api.car.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

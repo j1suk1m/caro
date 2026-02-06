@@ -1,7 +1,7 @@
 package today.caro.api.expense.repository;
 
 import static today.caro.api.expense.entity.QExpense.expense;
-import static today.caro.api.membercar.entity.QMemberCar.memberCar;
+import static today.caro.api.car.entity.QMemberCar.memberCar;
 import static today.caro.api.vehicle.entity.QCarModel.carModel;
 
 import com.querydsl.core.BooleanBuilder;

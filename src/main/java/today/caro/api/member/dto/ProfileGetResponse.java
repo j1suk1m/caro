@@ -1,7 +1,7 @@
 package today.caro.api.member.dto;
 
 import today.caro.api.member.entity.Member;
-import today.caro.api.membercar.entity.MemberCar;
+import today.caro.api.car.entity.MemberCar;
 
 public record ProfileGetResponse(
     String name,
