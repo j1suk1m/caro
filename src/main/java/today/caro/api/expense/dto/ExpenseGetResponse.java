@@ -17,7 +17,8 @@ public record ExpenseGetResponse(
 
     public record MemberCarInfo(
         Long id,
-        String name,
+        String brandName,
+        String modelName,
         String variant
     ) {}
 
@@ -32,6 +33,7 @@ public record ExpenseGetResponse(
             expense.getMemo(),
             new MemberCarInfo(
                 expense.getMemberCar().getId(),
+                expense.getMemberCar().getModel().getBrand().getName(),
                 expense.getMemberCar().getModel().getName(),
                 expense.getMemberCar().getModel().getVariant()
             )
