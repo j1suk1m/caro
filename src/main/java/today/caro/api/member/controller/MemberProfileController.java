@@ -7,10 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import today.caro.api.common.dto.ApiResponse;
 import today.caro.api.common.dto.EmptyData;
 import today.caro.api.common.dto.SuccessCode;
@@ -58,7 +55,8 @@ public class MemberProfileController {
     })
     @PatchMapping
     public ResponseEntity<ApiResponse<EmptyData>> updateProfile(
-        Authentication authentication, ProfileUpdateRequest request
+        Authentication authentication,
+        @RequestBody ProfileUpdateRequest request
     ) {
         Long memberId = Long.parseLong(authentication.getName());
         memberService.updateProfile(memberId, request);
