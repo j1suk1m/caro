@@ -27,4 +27,6 @@ public interface MemberCarRepository extends JpaRepository<MemberCar, Long> {
     """)
     List<MemberCar> findAllByMemberId(@Param("memberId") Long memberId);
 
+    Optional<MemberCar> findByIdAndMemberId(Long id, Long memberId);
+
 }

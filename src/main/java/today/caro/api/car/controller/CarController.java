@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import today.caro.api.car.dto.MemberCarGetResponse;
 import today.caro.api.common.dto.ApiResponse;
+import today.caro.api.common.dto.EmptyData;
 import today.caro.api.common.dto.SuccessCode;
 import today.caro.api.config.SwaggerConstants;
 import today.caro.api.car.dto.MemberCarRegisterRequest;
@@ -69,6 +70,29 @@ public class CarController {
 
         return ResponseEntity
             .ok(ApiResponse.success(SuccessCode.OK, response));
+    }
+
+    @Operation(
+        summary = "내 차량 삭제",
+        description = "현재 사용자의 개인 차량을 회원 차량 아이디로 삭제합니다.",
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
+    )
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "접근 권한 없음")
+    })
+    @DeleteMapping("/{member-car-id}")
+    public ResponseEntity<ApiResponse<EmptyData>> delete(
+        Authentication authentication,
+        @PathVariable(name = "member-car-id") Long memberCarId
+    ) {
+        Long memberId = Long.parseLong(authentication.getName());
+        memberCarService.delete(memberId, memberCarId);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK));
     }
 
 }

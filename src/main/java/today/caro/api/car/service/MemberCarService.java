@@ -63,4 +63,12 @@ public class MemberCarService {
         car.updateRegistrationNumber(registrationNumber);
     }
 
+    @Transactional
+    public void delete(Long memberId, Long memberCarId) {
+        MemberCar car = memberCarRepository.findByIdAndMemberId(memberCarId, memberId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_CAR_ACCESS_DENIED));
+
+        memberCarRepository.delete(car);
+    }
+
 }
