@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import today.caro.api.coupon.entity.MemberCoupon;
 
-public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
+public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long>, MemberCouponRepositoryCustom {
 
     @Query("""
         SELECT COALESCE(SUM(mc.usedPoints), 0)

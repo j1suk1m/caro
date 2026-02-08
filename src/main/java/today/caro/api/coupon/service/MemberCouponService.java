@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import today.caro.api.common.exception.BusinessException;
 import today.caro.api.common.exception.ErrorCode;
+import today.caro.api.coupon.dto.MemberCouponGetResponse;
+import today.caro.api.coupon.dto.MemberCouponListGetResponse;
 import today.caro.api.coupon.util.BarcodeNumberGenerator;
 import today.caro.api.drivingrecord.dto.DrivingRecordSummaryGetResponse;
 import today.caro.api.drivingrecord.repository.DrivingRecordRepository;
@@ -18,6 +20,7 @@ import today.caro.api.reward.entity.RewardCoupon;
 import today.caro.api.reward.repository.RewardCouponRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +62,12 @@ public class MemberCouponService {
         rewardCoupon.incrementRedeemCount();
 
         return new MemberCouponCreateResponse(memberCoupon.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public MemberCouponListGetResponse getMyCoupons(Long memberId) {
+        List<MemberCouponGetResponse> coupons = memberCouponRepository.findActiveCouponsByMemberId(memberId);
+        return new MemberCouponListGetResponse(coupons.size(), coupons);
     }
 
 }

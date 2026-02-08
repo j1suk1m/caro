@@ -15,6 +15,7 @@ import today.caro.api.common.dto.SuccessCode;
 import today.caro.api.config.SwaggerConstants;
 import today.caro.api.coupon.dto.MemberCouponCreateRequest;
 import today.caro.api.coupon.dto.MemberCouponCreateResponse;
+import today.caro.api.coupon.dto.MemberCouponListGetResponse;
 import today.caro.api.coupon.service.MemberCouponService;
 
 @Tag(name = "Coupon", description = "회원 쿠폰 API")
@@ -47,6 +48,27 @@ public class MemberCouponController {
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(ApiResponse.success(SuccessCode.CREATED, response));
+    }
+
+    @Operation(
+        summary = "보유 쿠폰 목록 조회",
+        description = "현재 사용자가 보유한 쿠폰 목록을 조회합니다.",
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
+    )
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요"),
+    })
+    @GetMapping
+    public ResponseEntity<ApiResponse<MemberCouponListGetResponse>> getMyCoupons(
+        Authentication authentication
+    ) {
+        Long memberId = Long.parseLong(authentication.getName());
+        MemberCouponListGetResponse response = memberCouponService.getMyCoupons(memberId);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK, response));
     }
 
 }
