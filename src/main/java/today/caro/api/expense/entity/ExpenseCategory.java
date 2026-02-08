@@ -11,7 +11,9 @@ public enum ExpenseCategory {
     MAINTENANCE("정비·수리비"),
     PARKING("주차비"),
     TOLL("통행료"),
-    CAR_WASH("세차비");
+    CAR_WASH("세차비"),
+    INSURANCE("보험료"),
+    ACCESSORY("자동차 용품비");
 
     private final String description;
 
