@@ -3,7 +3,7 @@ CREATE TABLE member_coupon (
     member_id BIGINT NOT NULL,
     reward_coupon_id BIGINT NOT NULL,
     used_points INT NOT NULL,
-    barcode_number CHAR(13) NOT NULL UNIQUE,
+    barcode_number VARCHAR(13) NOT NULL UNIQUE,
     used_at DATETIME(6) NULL,
     expired_at DATETIME(6) NOT NULL,
     created_at DATETIME(6) NOT NULL,
