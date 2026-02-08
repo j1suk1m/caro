@@ -5,22 +5,18 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public record DrivingRecordCreateRequest(
 
     @NotNull(message = "차량 ID는 필수입니다.")
     Long memberCarId,
 
-    @NotNull(message = "운행 날짜는 필수입니다.")
-    LocalDate driveDate,
+    @NotNull(message = "운행 시작 일시는 필수입니다.")
+    LocalDateTime startDateTime,
 
-    @NotNull(message = "출발 시간은 필수입니다.")
-    LocalTime startTime,
-
-    @NotNull(message = "도착 시간은 필수입니다.")
-    LocalTime endTime,
+    @NotNull(message = "운행 종료 일시는 필수입니다.")
+    LocalDateTime endDateTime,
 
     @NotNull(message = "주행 거리는 필수입니다.")
     @Positive(message = "주행 거리는 0보다 커야 합니다.")

@@ -13,6 +13,8 @@ import today.caro.api.car.repository.MemberCarRepository;
 import today.caro.api.point.policy.PointCalculationPolicy;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -31,12 +33,19 @@ public class DrivingRecordService {
         LocalDate startDate = targetMonth.atDay(1);
         LocalDate endDate = targetMonth.atEndOfMonth();
 
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+
         List<DrivingRecord> records;
 
         if (cursor != null) {
-            records = drivingRecordRepository.findByMemberIdAndMonth(memberId, startDate, endDate, cursor, size);
+            records = drivingRecordRepository.findByMemberIdAndMonth(
+                memberId, startDateTime, endDateTime, cursor, size
+            );
         } else {
-            records = drivingRecordRepository.findByMemberIdAndMonthNoCursor(memberId, startDate, endDate, size);
+            records = drivingRecordRepository.findByMemberIdAndMonthNoCursor(
+                memberId, startDateTime, endDateTime, size
+            );
         }
 
         List<DrivingRecordGetResponse> responseList = records.stream()
@@ -60,9 +69,8 @@ public class DrivingRecordService {
         DrivingRecord record = DrivingRecord.builder()
             .member(memberCar.getMember())
             .memberCar(memberCar)
-            .driveDate(request.driveDate())
-            .startTime(request.startTime())
-            .endTime(request.endTime())
+            .startDateTime(request.startDateTime())
+            .endDateTime(request.endDateTime())
             .distanceKm(request.distanceKm())
             .startLocation(request.startLocation())
             .endLocation(request.endLocation())
