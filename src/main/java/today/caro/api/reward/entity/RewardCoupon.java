@@ -1,0 +1,57 @@
+package today.caro.api.reward.entity;
+
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "reward_coupon")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
+public class RewardCoupon {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reward_brand_id", nullable = false)
+    private RewardBrand brand;
+
+    @Column(nullable = false)
+    private String itemName;
+
+    @Column(nullable = false)
+    private int requiredPoints;
+
+    @Column(length = 500)
+    private String imageUrl;
+
+    @Column(nullable = false)
+    private int redeemCount;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Builder
+    public RewardCoupon(RewardBrand brand, String itemName, int requiredPoints, String imageUrl) {
+        this.brand = brand;
+        this.itemName = itemName;
+        this.requiredPoints = requiredPoints;
+        this.imageUrl = imageUrl;
+        this.redeemCount = 0;
+    }
+
+    public void incrementRedeemCount() {
+        this.redeemCount++;
+    }
+
+}
