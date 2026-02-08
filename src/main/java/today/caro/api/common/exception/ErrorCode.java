@@ -29,7 +29,9 @@ public enum ErrorCode {
     MEMBER_COUPON_NOT_FOUND(HttpStatus.NOT_FOUND, "교환권을 찾을 수 없습니다."),
     MEMBER_COUPON_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 교환권에 대한 접근 권한이 없습니다."),
 
-    INSUFFICIENT_POINTS(HttpStatus.BAD_REQUEST, "포인트가 부족합니다.");
+    INSUFFICIENT_POINTS(HttpStatus.BAD_REQUEST, "포인트가 부족합니다."),
+
+    MEMBER_ALREADY_ATTENDED(HttpStatus.CONFLICT, "오늘 출석이 이미 완료되었습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
