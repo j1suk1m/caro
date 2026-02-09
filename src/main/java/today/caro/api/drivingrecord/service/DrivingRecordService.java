@@ -12,7 +12,6 @@ import today.caro.api.car.entity.MemberCar;
 import today.caro.api.car.repository.MemberCarRepository;
 import today.caro.api.point.policy.PointCalculationPolicy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
@@ -28,25 +27,13 @@ public class DrivingRecordService {
 
     @Transactional(readOnly = true)
     public DrivingRecordPageGetResponse getDrivingRecords(Long memberId, YearMonth yearMonth, Long cursor, int size) {
-        YearMonth targetMonth = yearMonth != null ? yearMonth : YearMonth.now();
+        YearMonth targetMonth = (yearMonth != null) ? yearMonth : YearMonth.now();
 
-        LocalDate startDate = targetMonth.atDay(1);
-        LocalDate endDate = targetMonth.atEndOfMonth();
+        LocalDateTime start = targetMonth.atDay(1).atStartOfDay();
+        LocalDateTime end = targetMonth.atEndOfMonth().atTime(LocalTime.MAX);
 
-        LocalDateTime startDateTime = startDate.atStartOfDay();
-        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
-
-        List<DrivingRecord> records;
-
-        if (cursor != null) {
-            records = drivingRecordRepository.findByMemberIdAndMonth(
-                memberId, startDateTime, endDateTime, cursor, size
-            );
-        } else {
-            records = drivingRecordRepository.findByMemberIdAndMonthNoCursor(
-                memberId, startDateTime, endDateTime, size
-            );
-        }
+        // 운행 기록 리스트 조회
+        List<DrivingRecord> records = drivingRecordRepository.findByMemberAndMonth(memberId, start, end, cursor, size);
 
         List<DrivingRecordGetResponse> responseList = records.stream()
             .map(DrivingRecordGetResponse::from)
