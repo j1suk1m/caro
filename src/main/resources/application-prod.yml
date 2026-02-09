@@ -1,12 +1,14 @@
 spring:
   datasource:
-    url: jdbc:mysql://${DB_HOST:mysql-container}:3306/caro_db?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${DB_HOST:mysql-container}:3306/caro_db?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: validate
+      jdbc:
+        time_zone: Asia/Seoul
     show-sql: false
   flyway:
     enabled: true
