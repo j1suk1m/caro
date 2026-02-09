@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import today.caro.api.common.dto.ApiResponse;
@@ -15,6 +16,7 @@ import today.caro.api.common.dto.SuccessCode;
 import today.caro.api.config.SwaggerConstants;
 import today.caro.api.point.dto.MemberPointGetResponse;
 import today.caro.api.point.dto.PendingPointGetResponse;
+import today.caro.api.point.dto.PointClaimResponse;
 import today.caro.api.point.dto.PointHistoryListGetResponse;
 import today.caro.api.point.service.PointHistoryService;
 
@@ -81,6 +83,27 @@ public class PointController {
     ) {
         Long memberId = Long.parseLong(authentication.getName());
         PendingPointGetResponse response = pointHistoryService.getPendingPoints(memberId);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK, response));
+    }
+
+    @Operation(
+        summary = "운행 포인트 수령",
+        description = "가장 오래된 미수령 운행 기록의 포인트를 수령합니다.",
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
+    )
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "리소스를 찾을 수 없음")
+    })
+    @PostMapping("/claim")
+    public ResponseEntity<ApiResponse<PointClaimResponse>> claimPoints(
+        Authentication authentication
+    ) {
+        Long memberId = Long.parseLong(authentication.getName());
+        PointClaimResponse response = pointHistoryService.claimOldestPendingPoints(memberId);
 
         return ResponseEntity
             .ok(ApiResponse.success(SuccessCode.OK, response));

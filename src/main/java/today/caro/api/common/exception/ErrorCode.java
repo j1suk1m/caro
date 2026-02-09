@@ -31,7 +31,11 @@ public enum ErrorCode {
 
     INSUFFICIENT_POINTS(HttpStatus.BAD_REQUEST, "포인트가 부족합니다."),
 
-    MEMBER_ALREADY_ATTENDED(HttpStatus.CONFLICT, "오늘 출석이 이미 완료되었습니다.");
+    MEMBER_ALREADY_ATTENDED(HttpStatus.CONFLICT, "오늘 출석이 이미 완료되었습니다."),
+
+    POINTS_ALREADY_CLAIMED(HttpStatus.CONFLICT, "이미 포인트를 수령하였습니다."),
+    POINTS_CLAIM_EXPIRED(HttpStatus.BAD_REQUEST, "포인트 수령 기간이 만료되었습니다."),
+    NO_PENDING_POINTS(HttpStatus.NOT_FOUND, "수령 가능한 포인트가 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import today.caro.api.car.entity.MemberCar;
+import today.caro.api.common.exception.BusinessException;
+import today.caro.api.common.exception.ErrorCode;
 import today.caro.api.member.entity.Member;
 
 import java.math.BigDecimal;
@@ -83,6 +85,27 @@ public class DrivingRecord {
         this.earnedPoints = earnedPoints;
         this.pendingPoints = pendingPoints;
         this.pointsClaimed = pointsClaimed;
+    }
+
+    public void claimPoints() {
+        if (this.pointsClaimed) {
+            throw new BusinessException(ErrorCode.POINTS_ALREADY_CLAIMED);
+        }
+
+        if (isClaimExpired()) {
+            throw new BusinessException(ErrorCode.POINTS_CLAIM_EXPIRED);
+        }
+
+        this.earnedPoints = this.pendingPoints;
+        this.pointsClaimed = true;
+    }
+
+    public boolean isClaimExpired() {
+        return LocalDateTime.now().isAfter(getClaimDeadline());
+    }
+
+    public LocalDateTime getClaimDeadline() {
+        return endDateTime.toLocalDate().plusDays(1).atStartOfDay();
     }
 
 }

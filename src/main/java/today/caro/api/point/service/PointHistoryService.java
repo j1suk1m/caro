@@ -5,12 +5,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import today.caro.api.attendance.entity.MemberAttendance;
 import today.caro.api.attendance.repository.MemberAttendanceRepository;
+import today.caro.api.common.exception.BusinessException;
+import today.caro.api.common.exception.ErrorCode;
 import today.caro.api.coupon.entity.MemberCoupon;
 import today.caro.api.coupon.repository.MemberCouponRepository;
 import today.caro.api.drivingrecord.dto.DrivingRecordSummaryGetResponse;
 import today.caro.api.drivingrecord.entity.DrivingRecord;
 import today.caro.api.drivingrecord.repository.DrivingRecordRepository;
-import today.caro.api.point.dto.*;
+import today.caro.api.point.dto.DrivingDetail;
+import today.caro.api.point.dto.MemberPointGetResponse;
+import today.caro.api.point.dto.PendingPointGetResponse;
+import today.caro.api.point.dto.PointClaimResponse;
+import today.caro.api.point.dto.PointHistoryGetResponse;
+import today.caro.api.point.dto.PointHistoryListGetResponse;
 import today.caro.api.point.repository.PointHistoryRepository;
 
 import java.util.ArrayList;
@@ -75,6 +82,22 @@ public class PointHistoryService {
             .sum();
 
         return new PendingPointGetResponse(totalPendingPoints);
+    }
+
+    @Transactional
+    public PointClaimResponse claimOldestPendingPoints(Long memberId) {
+        List<DrivingRecord> pendingRecords = drivingRecordRepository.findPendingByMemberId(memberId);
+
+        if (pendingRecords.isEmpty()) {
+            throw new BusinessException(ErrorCode.NO_PENDING_POINTS);
+        }
+
+        DrivingRecord oldest = pendingRecords.get(0);
+        oldest.claimPoints();
+
+        int remainingCount = pendingRecords.size() - 1;
+
+        return new PointClaimResponse(oldest.getEarnedPoints(), remainingCount);
     }
 
 }
