@@ -50,6 +50,12 @@ public class DrivingRecord {
     @Column(nullable = false)
     private Integer earnedPoints;
 
+    @Column(nullable = false)
+    private Integer pendingPoints;
+
+    @Column(nullable = false)
+    private Boolean pointsClaimed;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -63,7 +69,9 @@ public class DrivingRecord {
         BigDecimal distanceKm,
         String startLocation,
         String endLocation,
-        Integer earnedPoints
+        Integer earnedPoints,
+        Integer pendingPoints,
+        Boolean pointsClaimed
     ) {
         this.member = member;
         this.memberCar = memberCar;
@@ -73,6 +81,8 @@ public class DrivingRecord {
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.earnedPoints = earnedPoints;
+        this.pendingPoints = pendingPoints;
+        this.pointsClaimed = pointsClaimed;
     }
 
 }
