@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record DrivingDetail(
+    Long drivingRecordId,
     LocalDateTime startDateTime,
     LocalDateTime endDateTime,
     BigDecimal distanceKm,
@@ -15,6 +16,7 @@ public record DrivingDetail(
 ) {
     public static DrivingDetail from(DrivingRecord record) {
         return new DrivingDetail(
+            record.getId(),
             record.getStartDateTime(),
             record.getEndDateTime(),
             record.getDistanceKm(),
