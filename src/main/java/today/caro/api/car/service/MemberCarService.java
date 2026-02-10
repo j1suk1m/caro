@@ -40,6 +40,12 @@ public class MemberCarService {
             .mileage(request.mileage())
             .build();
 
+        boolean isFirstCar = memberCarRepository.findAllByMemberId(memberId).isEmpty();
+
+        if (isFirstCar) {
+            memberCar.setPrimary(true);
+        }
+
         memberCarRepository.save(memberCar);
 
         return MemberCarRegisterResponse.from(memberCar);
