@@ -29,4 +29,6 @@ public interface MemberCarRepository extends JpaRepository<MemberCar, Long> {
 
     Optional<MemberCar> findByIdAndMemberId(Long id, Long memberId);
 
+    Optional<MemberCar> findByMemberIdAndIsPrimaryTrue(Long memberId);
+
 }

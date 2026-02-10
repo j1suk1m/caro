@@ -64,6 +64,17 @@ public class MemberCarService {
     }
 
     @Transactional
+    public void setPrimaryCar(Long memberId, Long memberCarId) {
+        MemberCar car = memberCarRepository.findByIdAndMemberId(memberCarId, memberId)
+            .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_CAR_ACCESS_DENIED));
+
+        memberCarRepository.findByMemberIdAndIsPrimaryTrue(memberId)
+            .ifPresent(current -> current.setPrimary(false));
+
+        car.setPrimary(true);
+    }
+
+    @Transactional
     public void delete(Long memberId, Long memberCarId) {
         MemberCar car = memberCarRepository.findByIdAndMemberId(memberCarId, memberId)
             .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_CAR_ACCESS_DENIED));

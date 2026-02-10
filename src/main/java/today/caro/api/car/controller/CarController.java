@@ -95,4 +95,26 @@ public class CarController {
             .ok(ApiResponse.success(SuccessCode.OK));
     }
 
+    @Operation(
+        summary = "대표 차량 설정",
+        description = "현재 사용자의 대표 차량을 설정합니다.",
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
+    )
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "접근 권한 없음")
+    })
+    @PatchMapping("/{member-car-id}/primary")
+    public ResponseEntity<ApiResponse<EmptyData>> setPrimaryCar(
+        Authentication authentication,
+        @PathVariable(name = "member-car-id") Long memberCarId
+    ) {
+        Long memberId = Long.parseLong(authentication.getName());
+        memberCarService.setPrimaryCar(memberId, memberCarId);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK));
+    }
+
 }

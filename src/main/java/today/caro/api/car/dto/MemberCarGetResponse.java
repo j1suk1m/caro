@@ -7,7 +7,8 @@ public record MemberCarGetResponse(
     String brandName,
     String modelName,
     String variant,
-    String registrationNumber
+    String registrationNumber,
+    boolean isPrimary
 ) {
     public static MemberCarGetResponse from(MemberCar car) {
         return new MemberCarGetResponse(
@@ -15,7 +16,8 @@ public record MemberCarGetResponse(
             car.getModel().getBrand().getName(),
             car.getModel().getName(),
             car.getModel().getVariant(),
-            car.getRegistrationNumber()
+            car.getRegistrationNumber(),
+            car.isPrimary()
         );
     }
 }
