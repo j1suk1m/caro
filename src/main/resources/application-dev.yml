@@ -21,10 +21,10 @@ server:
   port: ${APP_PORT:8080}
 
 api:
-  client:
-    url: http://localhost:3000
   server:
     url: http://localhost:8080
+  cors:
+    allowed-origins: http://localhost:*
 
 jwt:
   secret: ${JWT_SECRET:abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz}
