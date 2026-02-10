@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record DrivingRecordCreateRequest(
 
@@ -26,7 +27,14 @@ public record DrivingRecordCreateRequest(
     String startLocation,
 
     @NotBlank(message = "도착 위치는 필수입니다.")
-    String endLocation
+    String endLocation,
+
+    List<RouteCoordinateSaveRequest> routeCoordinates
 
 ) {
+    public record RouteCoordinateSaveRequest(
+        BigDecimal lat,
+        BigDecimal lng,
+        Long timestamp
+    ) {}
 }

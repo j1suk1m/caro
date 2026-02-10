@@ -7,6 +7,7 @@ import today.caro.api.common.exception.BusinessException;
 import today.caro.api.common.exception.ErrorCode;
 import today.caro.api.drivingrecord.dto.*;
 import today.caro.api.drivingrecord.entity.DrivingRecord;
+import today.caro.api.drivingrecord.entity.RouteCoordinate;
 import today.caro.api.drivingrecord.repository.DrivingRecordRepository;
 import today.caro.api.car.entity.MemberCar;
 import today.caro.api.car.repository.MemberCarRepository;
@@ -57,6 +58,12 @@ public class DrivingRecordService {
 
         int pendingPoints = pointCalculationPolicy.calculate(request.distanceKm());
 
+        List<RouteCoordinate> routeCoordinates = request.routeCoordinates() == null
+            ? null
+            : request.routeCoordinates().stream()
+                .map(r -> new RouteCoordinate(r.lat(), r.lng(), r.timestamp()))
+                .toList();
+
         DrivingRecord record = DrivingRecord.builder()
             .member(memberCar.getMember())
             .memberCar(memberCar)
@@ -68,6 +75,7 @@ public class DrivingRecordService {
             .earnedPoints(0)
             .pendingPoints(pendingPoints)
             .pointsClaimed(false)
+            .routeCoordinates(routeCoordinates)
             .build();
 
         DrivingRecord saved = drivingRecordRepository.save(record);
