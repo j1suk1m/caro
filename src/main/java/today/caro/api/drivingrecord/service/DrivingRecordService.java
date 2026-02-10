@@ -12,6 +12,7 @@ import today.caro.api.car.entity.MemberCar;
 import today.caro.api.car.repository.MemberCarRepository;
 import today.caro.api.point.policy.PointCalculationPolicy;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
@@ -77,6 +78,23 @@ public class DrivingRecordService {
     @Transactional(readOnly = true)
     public DrivingRecordSummaryGetResponse getSummary(Long memberId) {
         return drivingRecordRepository.findSummaryByMemberId(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public DrivingRecordTodayGetResponse getTodayDrivingRecords(Long memberId) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime start = today.atStartOfDay();
+        LocalDateTime end = today.atTime(LocalTime.MAX);
+
+        List<DrivingRecord> records = drivingRecordRepository.findByMemberAndMonth(
+            memberId, start, end, null, Integer.MAX_VALUE
+        );
+
+        List<DrivingRecordGetResponse> responseList = records.stream()
+            .map(DrivingRecordGetResponse::from)
+            .toList();
+
+        return DrivingRecordTodayGetResponse.of(responseList);
     }
 
 }

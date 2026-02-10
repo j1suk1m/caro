@@ -22,6 +22,7 @@ import today.caro.api.drivingrecord.dto.DrivingRecordCreateRequest;
 import today.caro.api.drivingrecord.dto.DrivingRecordCreateResponse;
 import today.caro.api.drivingrecord.dto.DrivingRecordPageGetResponse;
 import today.caro.api.drivingrecord.dto.DrivingRecordSummaryGetResponse;
+import today.caro.api.drivingrecord.dto.DrivingRecordTodayGetResponse;
 import today.caro.api.drivingrecord.service.DrivingRecordService;
 
 import java.time.YearMonth;
@@ -96,6 +97,26 @@ public class DrivingRecordController {
     ) {
         Long memberId = Long.parseLong(authentication.getName());
         DrivingRecordSummaryGetResponse response = drivingRecordService.getSummary(memberId);
+
+        return ResponseEntity
+            .ok(ApiResponse.success(SuccessCode.OK, response));
+    }
+
+    @Operation(
+        summary = "오늘의 운행 기록 조회",
+        description = "현재 사용자의 오늘 날짜 운행 기록을 조회합니다.",
+        security = @SecurityRequirement(name = SwaggerConstants.BEARER_SCHEME)
+    )
+    @ApiResponses({
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "인증 필요")
+    })
+    @GetMapping("/today")
+    public ResponseEntity<ApiResponse<DrivingRecordTodayGetResponse>> getTodayDrivingRecords(
+        Authentication authentication
+    ) {
+        Long memberId = Long.parseLong(authentication.getName());
+        DrivingRecordTodayGetResponse response = drivingRecordService.getTodayDrivingRecords(memberId);
 
         return ResponseEntity
             .ok(ApiResponse.success(SuccessCode.OK, response));
